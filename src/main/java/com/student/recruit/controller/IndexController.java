@@ -16,8 +16,7 @@ import java.util.Date;
  * @CreateTime 2017/1/9 11:32
  */
 @Controller
-@RequestMapping(value = "/")
-public class IndexController {
+public class IndexController  {
 
   @Autowired
   private UserService userService;
@@ -33,7 +32,7 @@ public class IndexController {
   @ResponseBody
   public String addUser() {
     User user = new User();
-    user.setUserName("残影&");
+    user.setUsername("残影&");
     user.setPassword("xia1234");
     user.setRealName("夏超");
     user.setEmail("xiachaosir@163.com");
@@ -53,8 +52,9 @@ public class IndexController {
    * @Param  
    * @Return 
    */
-  @RequestMapping("/test")
-  public String test(){
-    return "login";
+  @RequestMapping("index")
+  public String index(){
+    return "index";
   }
+
 }
