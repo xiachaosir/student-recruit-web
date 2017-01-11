@@ -32,8 +32,8 @@ public class IndexController  {
   @ResponseBody
   public String addUser() {
     User user = new User();
-    user.setUsername("残影&");
-    user.setPassword("xia1234");
+    user.setUsername("xiachao");
+    user.setPassword("1234");
     user.setRealName("夏超");
     user.setEmail("xiachaosir@163.com");
     user.setPhone("17600208928");

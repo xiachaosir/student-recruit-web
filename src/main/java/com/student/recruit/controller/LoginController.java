@@ -12,7 +12,6 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +28,7 @@ public class LoginController {
   private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
   @GetMapping("login")
-  public String loginForm(Model model) {
-    model.addAttribute("user", new User());
+  public String loginForm() {
     return "login";
   }
 
@@ -50,7 +48,6 @@ public class LoginController {
       //所以这一步在调用login(token)方法时,它会走到MyRealm.doGetAuthenticationInfo()方法中,具体验证方式详见此方法
       logger.info("对用户[" + username + "]进行登录验证..验证开始");
       currentUser.login(usernamePasswordToken);
-
       logger.info("对用户[" + username + "]进行登录验证..验证通过");
     }catch(UnknownAccountException uae){
       logger.info("对用户[" + username + "]进行登录验证..验证未通过,未知账户");

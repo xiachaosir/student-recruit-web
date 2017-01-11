@@ -6,6 +6,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @Author xiachao
  * @CreateTime 2017/1/11 14:30
  */
-
+@Configuration
 public class ShiroConfig {
   @Bean(name = "securityManager")
   public DefaultWebSecurityManager defaultWebSecurityManager() {
@@ -63,4 +64,5 @@ public class ShiroConfig {
   public Realm userRealm() {
     return new UserRealm();
   }
+
 }
