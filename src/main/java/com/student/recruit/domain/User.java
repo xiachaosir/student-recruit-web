@@ -26,6 +26,7 @@ public class User implements Serializable {
   @Id
   @GenericGenerator(name = "idGenerator", strategy = "uuid") //策略通用生成器
   @GeneratedValue(generator = "idGenerator") //使用uuid的生成策略
+  @Column(name="id",length = 255,nullable = true)
   private String id;
 
   @Column(name = "user_name", length = 30)

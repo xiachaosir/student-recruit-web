@@ -37,7 +37,7 @@ public class ShiroConfig {
     sf.setSecurityManager(defaultWebSecurityManager());
     sf.setSuccessUrl("/index");
     sf.setLoginUrl("/login");
-    sf.setUnauthorizedUrl("/login");
+    //sf.setUnauthorizedUrl("/login");
     Map<String, Filter> filters = new HashMap<>();
     sf.setFilters(filters);
     Map<String, String> urls = new LinkedHashMap<String, String>() {
@@ -46,7 +46,7 @@ public class ShiroConfig {
         put("/img/**", "anon");
         put("/css/**", "anon");
         put("/js/**", "anon");
-        put("/**", "authc");
+        put("/**", "anon");
       }
     };
     sf.setFilterChainDefinitionMap(urls);

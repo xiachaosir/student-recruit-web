@@ -28,7 +28,7 @@ public class LoginController {
   private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
   @GetMapping("login")
-  public String loginForm() {
+  public String login() {
     return "login";
   }
 
@@ -74,5 +74,13 @@ public class LoginController {
       usernamePasswordToken.clear();
       return "login";
     }
+  }
+
+  @GetMapping(value="logout")
+  public String logout(RedirectAttributes redirectAttributes ){
+    //使用权限管理工具进行用户的退出，跳出登录，给出提示信息
+    SecurityUtils.getSubject().logout();
+    redirectAttributes.addFlashAttribute("message", "您已安全退出");
+    return "redirect:/login";
   }
 }
