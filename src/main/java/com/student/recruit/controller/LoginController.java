@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,20 +29,23 @@ public class LoginController {
   private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
   @GetMapping("login")
-  public String login() {
+  public String login(@ModelAttribute Subject currentUser) {
+    if(currentUser.isAuthenticated()){
+      return "redirect:index";
+    }
     return "login";
   }
 
   @PostMapping("login")
-  public String login(@Validated User user, BindingResult bindingResult, RedirectAttributes
-      redirectAttributes) {
+  public String login(@Validated User user, @ModelAttribute Subject currentUser, BindingResult
+      bindingResult, RedirectAttributes redirectAttributes) {
     if(bindingResult.hasErrors()){
       return "login";
     }
     String username = user.getUsername();
     UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(),
         user.getPassword());
-    Subject currentUser = SecurityUtils.getSubject();
+
     try {
       //在调用了login方法后,SecurityManager会收到AuthenticationToken,并将其发送给已配置的Realm执行必须的认证检查
       //每个Realm都能在必要时对提交的AuthenticationTokens作出反应
@@ -69,6 +73,10 @@ public class LoginController {
     }
     if(currentUser.isAuthenticated()){
       logger.info("用户"+username+"认证成功");
+    /* Session session = currentUser.getSession();
+     session.setAttribute("username",username);
+     session.setTimeout(300000);*/
+      redirectAttributes.addFlashAttribute("username",username);
       return "redirect:index";
     }else{
       usernamePasswordToken.clear();
@@ -82,5 +90,10 @@ public class LoginController {
     SecurityUtils.getSubject().logout();
     redirectAttributes.addFlashAttribute("message", "您已安全退出");
     return "redirect:/login";
+  }
+
+  @ModelAttribute
+  public Subject currentUser(){
+    return SecurityUtils.getSubject();
   }
 }

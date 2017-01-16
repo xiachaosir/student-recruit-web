@@ -61,7 +61,7 @@ public class ShiroConfig {
   }
 
   @Bean
-  public Realm userRealm() {
+  public UserRealm userRealm() {
     return new UserRealm();
   }
 
