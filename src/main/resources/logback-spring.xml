@@ -7,8 +7,7 @@
               2)level:用来设置打印级别，大小写无关（最常用的几种）：DEBUG, INFO, WARN, ERROR 
   -->   
       <logger name="org.springframework.web" level="DEBUG" />
-     <!-- 这一句至关重要如果没有，就无法输出sql语句 -->
-   <logger name="com.student.recruit" level="DEBUG"></logger>
+      <logger name="com.student.recruit" level="DEBUG"></logger>
  </configuration>
     
     

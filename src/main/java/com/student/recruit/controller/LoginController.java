@@ -30,7 +30,7 @@ public class LoginController {
 
   @GetMapping("login")
   public String login(@ModelAttribute Subject currentUser) {
-    if(currentUser.isAuthenticated()){
+    if (currentUser.isAuthenticated()) {
       return "redirect:index";
     }
     return "login";
@@ -39,13 +39,12 @@ public class LoginController {
   @PostMapping("login")
   public String login(@Validated User user, @ModelAttribute Subject currentUser, BindingResult
       bindingResult, RedirectAttributes redirectAttributes) {
-    if(bindingResult.hasErrors()){
+    if (bindingResult.hasErrors()) {
       return "login";
     }
     String username = user.getUsername();
     UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(),
         user.getPassword());
-
     try {
       //在调用了login方法后,SecurityManager会收到AuthenticationToken,并将其发送给已配置的Realm执行必须的认证检查
       //每个Realm都能在必要时对提交的AuthenticationTokens作出反应
@@ -53,47 +52,47 @@ public class LoginController {
       logger.info("对用户[" + username + "]进行登录验证..验证开始");
       currentUser.login(usernamePasswordToken);
       logger.info("对用户[" + username + "]进行登录验证..验证通过");
-    }catch(UnknownAccountException uae){
+    } catch (UnknownAccountException uae) {
       logger.info("对用户[" + username + "]进行登录验证..验证未通过,未知账户");
       redirectAttributes.addFlashAttribute("message", "未知账户");
-    }catch(IncorrectCredentialsException ice){
+    } catch (IncorrectCredentialsException ice) {
       logger.info("对用户[" + username + "]进行登录验证..验证未通过,错误的凭证");
       redirectAttributes.addFlashAttribute("message", "密码不正确");
-    }catch(LockedAccountException lae){
+    } catch (LockedAccountException lae) {
       logger.info("对用户[" + username + "]进行登录验证..验证未通过,账户已锁定");
       redirectAttributes.addFlashAttribute("message", "账户已锁定");
-    }catch(ExcessiveAttemptsException eae){
+    } catch (ExcessiveAttemptsException eae) {
       logger.info("对用户[" + username + "]进行登录验证..验证未通过,错误次数过多");
       redirectAttributes.addFlashAttribute("message", "用户名或密码错误次数过多");
-    }catch(AuthenticationException ae){
+    } catch (AuthenticationException ae) {
       //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景
       logger.info("对用户[" + username + "]进行登录验证..验证未通过,堆栈轨迹如下");
       ae.printStackTrace();
       redirectAttributes.addFlashAttribute("message", "用户名或密码不正确");
     }
-    if(currentUser.isAuthenticated()){
-      logger.info("用户"+username+"认证成功");
+    if (currentUser.isAuthenticated()) {
+      logger.info("用户" + username + "认证成功");
     /* Session session = currentUser.getSession();
      session.setAttribute("username",username);
      session.setTimeout(300000);*/
-      redirectAttributes.addFlashAttribute("username",username);
+      redirectAttributes.addFlashAttribute("username", username);
       return "redirect:index";
-    }else{
+    } else {
       usernamePasswordToken.clear();
       return "login";
     }
   }
 
-  @GetMapping(value="logout")
-  public String logout(RedirectAttributes redirectAttributes ){
+  @GetMapping(value = "logout")
+  public String logout(RedirectAttributes redirectAttributes, @ModelAttribute Subject currentUser) {
     //使用权限管理工具进行用户的退出，跳出登录，给出提示信息
-    SecurityUtils.getSubject().logout();
+    currentUser.logout();
     redirectAttributes.addFlashAttribute("message", "您已安全退出");
     return "redirect:/login";
   }
 
   @ModelAttribute
-  public Subject currentUser(){
+  public Subject currentUser() {
     return SecurityUtils.getSubject();
   }
 }
