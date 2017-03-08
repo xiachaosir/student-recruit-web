@@ -24,4 +24,8 @@ public interface UserService {
    *
    */
   public void save(User user);
+
+  User findByPhone(String id);
+
+  User findById(String id);
 }
