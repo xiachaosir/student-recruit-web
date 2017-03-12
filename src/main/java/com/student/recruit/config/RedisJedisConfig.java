@@ -18,62 +18,85 @@ import redis.clients.jedis.JedisPoolConfig;
 @ConfigurationProperties(prefix = "spring.redis")
 public class RedisJedisConfig {
 
-    private Logger logger = LoggerFactory.getLogger(RedisJedisConfig.class);
+  private Logger logger = LoggerFactory.getLogger(RedisJedisConfig.class);
 
-    private String hostName;
+  private String host;
 
-    private int port;
+  private int port;
 
-    private String password;
+  private String password;
 
-    private int timeout;
+  private int timeout;
 
 
-    @Bean
-    public JedisPoolConfig getRedisConfig(){
+  @Bean
+  public JedisPoolConfig getRedisConfig() {
+    JedisPoolConfig config = new JedisPoolConfig();
+    return config;
+  }
+
+  @Bean
+  public JedisPool getJedisPool() {
+    JedisPoolConfig config = getRedisConfig();
+    JedisPool pool = new JedisPool(config, host, port, timeout, password);
+    logger.info("init JedisPool");
+    return pool;
+  }
+
+
+  public String getHost() {
+    return host;
+  }
+
+  public void setHost(String host) {
+    this.host = host;
+  }
+
+  public int getPort() {
+    return port;
+  }
+
+  public void setPort(int port) {
+    this.port = port;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public int getTimeout() {
+    return timeout;
+  }
+
+  public void setTimeout(int timeout) {
+    this.timeout = timeout;
+  }
+
+   /*  redis configuration 使用RedisTemplate
+   @Bean
+    @ConfigurationProperties(prefix = "spring.redis")
+    public JedisPoolConfig getRedisConfig() {
         JedisPoolConfig config = new JedisPoolConfig();
         return config;
     }
 
     @Bean
-    public JedisPool getJedisPool(){
+    @ConfigurationProperties(prefix = "spring.redis")
+    public JedisConnectionFactory getJedisConnectionFactory() {
+        JedisConnectionFactory factory = new JedisConnectionFactory();
         JedisPoolConfig config = getRedisConfig();
-        JedisPool pool = new JedisPool(config,hostName,port,timeout,password);
-        logger.info("init JedisPool");
-        return pool;
+        factory.setPoolConfig(config);
+        logger.info("jedisConnectionFactory bean init success");
+        return factory;
     }
 
-
-
-    public String getHostName() {
-        return hostName;
-    }
-
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
+    @Bean
+    public RedisTemplate<?, ?> getRedisTemplate() {
+        RedisTemplate<?, ?> template = new StringRedisTemplate(getJedisConnectionFactory());
+        return template;
+    }*/
 }

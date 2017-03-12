@@ -15,7 +15,7 @@ import redis.clients.jedis.JedisPool;
  * Created by xiachao on 2017/3/6.
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/test")
 public class TestController {
 
 

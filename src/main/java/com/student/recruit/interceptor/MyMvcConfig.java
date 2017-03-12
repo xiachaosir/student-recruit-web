@@ -8,11 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * 配置mvcconfigure .
  * Created by xiachao on 2017/3/6.
  */
-@Configuration
 public class MyMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/api/**");
+        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/test/**");
     }
 }

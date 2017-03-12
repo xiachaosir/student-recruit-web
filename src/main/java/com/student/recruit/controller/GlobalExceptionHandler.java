@@ -14,23 +14,23 @@ import javax.servlet.http.HttpServletRequest;
  * 全局异常处理类 .
  * Created by xiachao on 2017/3/7.
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalExceptionHandler {
 
     public static final String DEFAULT_ERROR_VIEW = "error";
 
-  /*  @ExceptionHandler(value = Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest httpServletRequest, Exception ex) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("exception", ex.getMessage());
-        modelAndView.addObject("url", httpServletRequest.getRequestURL().toString());
-        modelAndView.setViewName(DEFAULT_ERROR_VIEW);
-        return modelAndView;
+    /*  @ExceptionHandler(value = Exception.class)
+      public ModelAndView defaultErrorHandler(HttpServletRequest httpServletRequest, Exception ex) {
+          ModelAndView modelAndView = new ModelAndView();
+          modelAndView.addObject("exception", ex.getMessage());
+          modelAndView.addObject("url", httpServletRequest.getRequestURL().toString());
+          modelAndView.setViewName(DEFAULT_ERROR_VIEW);
+          return modelAndView;
 
-    }*/
+      }*/
     @ExceptionHandler(value = MyException.class)
     @ResponseBody
-    public ErrorInfo<String> defaultExceptionHandler(HttpServletRequest req,MyException e){
+    public ErrorInfo<String> defaultExceptionHandler(HttpServletRequest req, MyException e) {
         ErrorInfo<String> r = new ErrorInfo<>();
         r.setMessage(e.getMessage());
         r.setCode(ErrorInfo.ERROR);

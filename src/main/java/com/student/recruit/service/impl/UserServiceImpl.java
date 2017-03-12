@@ -11,6 +11,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @Description .
  * @Author xiachao
@@ -67,5 +69,15 @@ public class UserServiceImpl implements UserService {
     @Cacheable
     public User findById(String id) {
         return userRepository.findById(id);
+    }
+
+    /**
+     * 查找所有用户
+     *
+     * @return list
+     */
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

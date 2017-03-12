@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @Description .
@@ -26,7 +27,7 @@ public class User implements Serializable {
   @Id
   @GenericGenerator(name = "idGenerator", strategy = "uuid") //策略通用生成器
   @GeneratedValue(generator = "idGenerator") //使用uuid的生成策略
-  @Column(name="id",length = 255,nullable = true)
+  @Column(name = "id", length = 255, nullable = true)
   private String id;
 
   @Column(name = "user_name", length = 30)
@@ -43,6 +44,9 @@ public class User implements Serializable {
 
   @Column(name = "phone", length = 15)
   private String phone;
+
+  @Column
+  private UUID deptId;
 
   @Column(name = "create_date", updatable = false)
   @Temporal(TemporalType.TIMESTAMP)
@@ -61,17 +65,6 @@ public class User implements Serializable {
   /**
    * 有参构造方法.
    */
-  public User(String id, String username, String password, String realName, String email,
-              String phone, Date createDate, Date updateDate) {
-    this.id = id;
-    this.username = username;
-    this.password = password;
-    this.realName = realName;
-    this.email = email;
-    this.phone = phone;
-    this.createDate = createDate;
-    this.updateDate = updateDate;
-  }
 
   public String getId() {
     return id;
@@ -119,6 +112,14 @@ public class User implements Serializable {
 
   public void setPhone(String phone) {
     this.phone = phone;
+  }
+
+  public UUID getDeptId() {
+    return deptId;
+  }
+
+  public void setDeptId(UUID deptId) {
+    this.deptId = deptId;
   }
 
   public Date getCreateDate() {
