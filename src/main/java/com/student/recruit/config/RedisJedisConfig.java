@@ -1,3 +1,4 @@
+/*
 package com.student.recruit.config;
 
 import org.slf4j.Logger;
@@ -9,10 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+*/
 /**
  * jedis连接redis 方式 .
  * Created by xiachao on 2017/3/8.
- */
+ *//*
+
 @Configuration
 @EnableAutoConfiguration
 @ConfigurationProperties(prefix = "spring.redis")
@@ -76,7 +79,8 @@ public class RedisJedisConfig {
     this.timeout = timeout;
   }
 
-   /*  redis configuration 使用RedisTemplate
+   */
+/*  redis configuration 使用RedisTemplate
    @Bean
     @ConfigurationProperties(prefix = "spring.redis")
     public JedisPoolConfig getRedisConfig() {
@@ -98,5 +102,7 @@ public class RedisJedisConfig {
     public RedisTemplate<?, ?> getRedisTemplate() {
         RedisTemplate<?, ?> template = new StringRedisTemplate(getJedisConnectionFactory());
         return template;
-    }*/
+    }*//*
+
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.student.recruit.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,9 +19,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+*/
 /**
  * Created by xiachao on 2017/3/8.
- */
+ *//*
+
 @Service
 public class RedisServiceImpl implements RedisService {
 
@@ -139,3 +142,4 @@ public class RedisServiceImpl implements RedisService {
         return result;
     }
 }
+*/

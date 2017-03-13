@@ -3,9 +3,6 @@ package com.student.recruit.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -27,12 +24,12 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class Swagger2Config {
 
 
-  @Bean
+  /*@Bean
   public Docket testApi() {
     return new Docket(DocumentationType.SWAGGER_2)
         .groupName("test")
         .genericModelSubstitutes(DeferredResult.class)
-//                .genericModelSubstitutes(ResponseEntity.class)
+//      .genericModelSubstitutes(ResponseEntity.class)
         .useDefaultResponseMessages(false)
         .forCodeGeneration(true)
         .pathMapping("/")// base，最终调用接口后会和paths拼接在一起
@@ -79,31 +76,31 @@ public class Swagger2Config {
         .license("The Apache License, Version 2.0")
         .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
         .build();
+  }*/
+
+
+  public static final String SWAGGER_SCAN_BASE_PACKAGE = "com.student.recruit.controller";
+  public static final String VERSION = "1.0.0";
+
+  ApiInfo apiInfo() {
+    return new ApiInfoBuilder()
+        .title("Swagger API")
+        .description("This is to show api description")
+        .license("Apache 2.0")
+        .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+        .termsOfServiceUrl("")
+        .version(VERSION)
+        .contact(new Contact("", "", "xiachaosir@163.com"))
+        .build();
   }
 
-
-   /* public static final String SWAGGER_SCAN_BASE_PACKAGE = "com.student.recruit.controller";
-    public static final String VERSION = "1.0.0";
-
-    ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Swagger API")
-                .description("This is to show api description")
-                .license("Apache 2.0")
-                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
-                .termsOfServiceUrl("")
-                .version(VERSION)
-                .contact(new Contact("", "", "xiachaosir@163.com"))
-                .build();
-    }
-
-    @Bean
-    public Docket customImplementation() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage(SWAGGER_SCAN_BASE_PACKAGE))
-                .paths(PathSelectors.any())
-                .build();
-    }*/
+  @Bean
+  public Docket customImplementation() {
+    return new Docket(DocumentationType.SWAGGER_2)
+        .apiInfo(apiInfo())
+        .select()
+        .apis(RequestHandlerSelectors.basePackage(SWAGGER_SCAN_BASE_PACKAGE))
+        .paths(PathSelectors.any())
+        .build();
+  }
 }
