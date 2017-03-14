@@ -84,8 +84,8 @@ public class Swagger2Config {
 
   ApiInfo apiInfo() {
     return new ApiInfoBuilder()
-        .title("Swagger API")
-        .description("This is to show api description")
+        .title("迷你校api文档")
+        .description("SAAS系统公司设置，职位，候选人等相关接口说明")
         .license("Apache 2.0")
         .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
         .termsOfServiceUrl("")

@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableCaching
-public class StudentRecruitApplication {
+public class Application {
   /**
    * .
    *
    * @param args args
    */
   public static void main(String[] args) {
-    SpringApplication.run(StudentRecruitApplication.class, args);
+    SpringApplication.run(Application.class, args);
   }
 }
