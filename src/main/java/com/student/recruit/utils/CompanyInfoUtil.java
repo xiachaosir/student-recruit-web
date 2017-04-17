@@ -1,10 +1,10 @@
 package com.student.recruit.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minixiao.apiauth.client.HeaderUtil;
 import com.student.recruit.dto.CompanyInfo;
 import com.student.recruit.dto.CompanyInfoOld;
+import com.student.recruit.dto.CompanyInfoOldPageDTO;
 import com.student.recruit.dto.CompanyInfoPageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.logging.SimpleFormatter;
 
 /**
  * 公司信息转换 新数据转换成老数据结构.
@@ -87,9 +95,9 @@ public class CompanyInfoUtil {
    * @Param
    * @Return
    */
-  public static String convertCompany(CompanyInfo companyInfo) {
+  public static CompanyInfoOld convertCompany(CompanyInfo companyInfo) {
+    CompanyInfoOld companyInfoOld = new CompanyInfoOld();
     if (companyInfo != null) {
-      CompanyInfoOld companyInfoOld = new CompanyInfoOld();
       companyInfoOld.setAccId(companyInfo.getId());
       companyInfoOld.setcName(companyInfo.getFullName());
       companyInfoOld.setAddress(companyInfo.getDetailAddress());
@@ -101,15 +109,8 @@ public class CompanyInfoUtil {
       companyInfoOld.setWord(companyInfo.getSlogan());
       //暂时写死 到时候掉诗雨接口
       companyInfoOld.setpCount(100);
-      String str = "";
-      try {
-        str = objectMapper.writeValueAsString(companyInfoOld);
-        return str;
-      } catch (JsonProcessingException e) {
-        e.printStackTrace();
-      }
     }
-    return null;
+    return companyInfoOld;
   }
 
 
@@ -136,19 +137,85 @@ public class CompanyInfoUtil {
         .body(null);
   }
 
-
-  public static void main(String[] args) {
-
-    /*CompanyInfo companyInfo = CompanyInfoUtil.getCompanyInfo();
-    String str = CompanyInfoUtil.convertCompany(companyInfo);
-    System.out.println(str);*/
+  /**
+   * @Description 新数据格式转换为就数据格式 page.
+   * @Author xiachao
+   * @CreateTime 2017/3/15 17:26
+   * @Param
+   * @Return
+   */
+  public static CompanyInfoOldPageDTO getCompanyInfoPageDTO() {
     String str = CompanyInfoUtil.getPageCompanyInfo();
     System.out.println(str);
+    try {
+      CompanyInfoPageDTO companyInfoPageDTOList = objectMapper.readValue(str, CompanyInfoPageDTO.class);
+      List<CompanyInfo> companyInfoList = companyInfoPageDTOList.getContent();
+      List<CompanyInfoOld> oldList = new ArrayList<CompanyInfoOld>();
+      for (int i = 0; i < companyInfoList.size(); i++) {
+        CompanyInfo companyInfo = companyInfoList.get(i);
+        CompanyInfoOld companyInfoOld = convertCompany(companyInfo);
+        oldList.add(companyInfoOld);
+      }
+      CompanyInfoOldPageDTO companyInfoOldPageDTO = new CompanyInfoOldPageDTO();
+      companyInfoOldPageDTO.setData(oldList);
+
+      // pageSize 当前页有多少条记录
+      companyInfoOldPageDTO.setPageSize(companyInfoPageDTOList.getSize());
+
+      // pageNo 当前页
+      companyInfoOldPageDTO.setPageNo(companyInfoPageDTOList.getNumber());
+
+      //totalPage 总共多少页
+      companyInfoOldPageDTO.setTotalPage(companyInfoPageDTOList.getTotalPages());
+
+      //总共有多少条记录
+      companyInfoOldPageDTO.setTotalCount(companyInfoPageDTOList.getTotalElements());
+
+      String oldStr = objectMapper.writeValueAsString(companyInfoOldPageDTO);
+      System.out.println("-----输出老的数据格式-----");
+      System.out.println(oldStr);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
 
-    /*ResponseEntity<CompanyInfoPageDTO> companyInfoPageDTO = CompanyInfoUtil.getPageCompany(str);
-    CompanyInfoPageDTO result = companyInfoPageDTO.getBody();
-    System.out.println(result);*/
+  public static void main(String[] args) {
+    // System.out.println(getCompanyInfo());
+    //CompanyInfoUtil.getCompanyInfoPageDTO();
+    /*String str = "10000032";
+    System.out.println(str.length());
+    System.out.println(str.substring(0,str.length()-2));*/
+   /* UUID userId = UUID.fromString("3ce67c6d-ec95-4642-b212-e1f7a4bced95");
+    UUID recId = UUID.fromString("26c260f8-b4c2-49ad-9ee3-629af9881d41");
+    HttpHeaders httpHeaders = HeaderUtil.getHeader(userId, "夏超", "COMPANY",
+        recId, "迷你校");
+    HttpEntity requestEntity = new HttpEntity(null, httpHeaders);
+    ResponseEntity<String> responseEntity = restTemplate.exchange(
+        "http://127.0.0.1:9112/recruiters/" + recId + "/time", HttpMethod.GET,
+        requestEntity, String.class);
+    String str = responseEntity.getBody();
+    System.out.println(str);*/
+    LocalDateTime localDateTime = LocalDateTime.now();
+    System.out.println(localDateTime);
+    DayOfWeek week = localDateTime.getDayOfWeek();
+    System.out.println(week.toString());
+    LocalDateTime localDateTime1 = localDateTime.plusDays(-7);
+    System.out.println(localDateTime1);
+    LocalDate localDate = LocalDate.now();
+    System.out.println(localDate);
+    System.out.println(localDate.atStartOfDay());
+    System.out.println(localDate.minusMonths(100));
+
+
+    /*LocalDateTime localDateTime = LocalDateTime.now();
+    System.out.println(localDateTime);
+    Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+    System.out.println(timestamp);
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+    String data = formatter.format(timestamp);
+    System.out.println(data);*/
 
   }
 
